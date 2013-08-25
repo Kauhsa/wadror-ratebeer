@@ -3,6 +3,7 @@
 
 <p id="notice"><%= notice %></p>
 
+<h2><%= @brewery.beers.count %> beers:</h2>
 <ul>
  <% @brewery.beers.each do |beer| %>
    <li><%= link_to beer.name, beer %></li>
