@@ -10,5 +10,6 @@
  <% end %>
 </ul>
 
-<%= link_to 'Edit', edit_brewery_path(@brewery) %> |
-<%= link_to 'Back', breweries_path %>
+<p>beers of the brewery have <%= pluralize(@brewery.ratings.count, "rating") %>, average <%= @brewery.average_rating %></p>
+
+<%= link_to 'Edit', edit_brewery_path(@brewery) %>
