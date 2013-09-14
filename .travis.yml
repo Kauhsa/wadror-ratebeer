@@ -1,10 +1,13 @@
 language: ruby
-
 rvm:
- - 1.9.3
-
+- 1.9.3
 script:
- - bundle exec rake db:migrate --trace
- - RAILS_ENV=test bundle exec rake db:migrate --trace
- - bundle exec rake db:test:prepare
- - bundle exec rspec -f d spec/
+- bundle exec rake db:migrate --trace
+- RAILS_ENV=test bundle exec rake db:migrate --trace
+- bundle exec rake db:test:prepare
+- bundle exec rspec -f d spec/
+deploy:
+  provider: heroku
+  app: calm-lowlands-1816
+  api_key:
+    secure: TbsFygHEwaJv9t+Zg9SrdA677y4rifir0KtWHVkGy6tBQ/G6A6o7oS4yWKayiz1U9yX4+MB+gQHUOL4BtgSfkKZC4jrQ8lLkYLzxLAv18VBwf0cM+D4wucfS+nHRcloDB/Qr1ZGQ/3zMYF1OFjw/Xum2b9+7EV9VJU2la/sU5xQ=
