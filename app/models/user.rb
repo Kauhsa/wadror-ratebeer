@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   has_secure_password
 
   validates_uniqueness_of :username
-  validates_length_of :password, :minimum => 4
+  validates_length_of :password, :minimum => 4, :if => lambda { password or new_record? }
   validates_length_of :username, :minimum => 3, :maximum => 15
   validate :good_password
 
