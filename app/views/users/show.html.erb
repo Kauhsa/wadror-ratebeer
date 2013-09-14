@@ -24,6 +24,14 @@
     </p>
 <% end %>
 
+<% if @user.favorite_style %>
+  <p>favorite style: <%= @user.favorite_style %></p>
+<% end %>
+
+<% if @user.favorite_brewery %>
+  <p>favorite brewery: <%= link_to @user.favorite_brewery, @user.favorite_brewery %></p>
+<% end %>
+
 <% if currently_signed_in? @user %>
     <%= link_to 'Edit', edit_user_path(@user) %> |
     <%= link_to 'Delete', @user, :method => :delete, :data => { :confirm => 'Are you sure?' } %> |
