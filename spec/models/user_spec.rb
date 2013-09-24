@@ -70,22 +70,25 @@ describe User do
 
   describe "favorite style" do
     let(:user){ FactoryGirl.create :user }
+    let(:style1) { FactoryGirl.create :style }
+    let(:style2) { FactoryGirl.create :style }
+    let(:style3) { FactoryGirl.create :style }
 
     it "is nil if user has not rated any beers" do
       expect(user.favorite_style).to be(nil)
     end
 
     it "is style of the only rated beer" do
-      create_beer_with_rating user, 10, :style => "IPA"
-      expect(user.favorite_style).to eq("IPA")
+      create_beer_with_rating user, 10, :style => style1
+      expect(user.favorite_style).to eq(style1)
     end
 
     it "is style with highest average rating if several rated" do
-      create_beers_with_ratings user, [10, 31, 50], :style => "IPA"
-      create_beers_with_ratings user, [10, 10], :style => "Weissbier"
-      create_beers_with_ratings user, [10, 50], :style => "non-alcoholic"
+      create_beers_with_ratings user, [10, 31, 50], :style => style1
+      create_beers_with_ratings user, [10, 10], :style => style2
+      create_beers_with_ratings user, [10, 50], :style => style3
 
-      expect(user.favorite_style).to eq("IPA")
+      expect(user.favorite_style).to eq(style1)
     end
   end
 

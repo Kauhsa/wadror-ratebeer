@@ -34,7 +34,7 @@ describe "Rating" do
 
     it "is shown on beer page" do
       visit beer_path(beer1)
-      expect(page).to have_content("beer has 1 rating")
+      expect(page).to have_content("has been rated 1 times")
     end
 
     it "is shown on user's page" do
