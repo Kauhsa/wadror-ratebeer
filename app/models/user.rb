@@ -2,12 +2,13 @@ CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 class User < ActiveRecord::Base
   include RatingAverage
+  extend Top
 
   attr_accessible :username, :password, :password_confirmation
-  has_many :ratings, :dependent => :destroy
-  has_many :memberships
+  has_many :ratings, :dependent => :destroy, :include => [ :beer => [:brewery, :style ] ]
+  has_many :memberships, :include => [ :beer_club ]
   has_many :beers, :through => :ratings
-  has_many :beer_clubs, :through => :memberships
+  has_many :beer_clubs, :through => :memberships, :include => [ :beer_club ]
   has_secure_password
 
   validates_uniqueness_of :username
@@ -17,6 +18,14 @@ class User < ActiveRecord::Base
 
   def to_s
     username
+  end
+
+  def member_in
+    memberships.all.select{|x| x.confirmed}.map{|x| x.beer_club}
+  end
+
+  def applicant_in
+    memberships.all.select{|x| !x.confirmed}.map{|x| x.beer_club}
   end
 
   def favorite_beer

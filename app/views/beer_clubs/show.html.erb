@@ -4,9 +4,24 @@
 
 <p>Founded <%= @beer_club.founded %></p>
 
+<h3>Members</h3>
+
 <ul>
-    <% @beer_club.users.each do |user| %>
+    <% @beer_club.members.each do |user| %>
         <li><%= link_to user, user %></li>
+    <% end %>
+</ul>
+
+<h3>Applicants</h3>
+
+<ul>
+    <% @beer_club.memberships.not_confirmed.each do |ms| %>
+        <li>
+            <%= link_to ms.user, ms.user %>
+            <% if @beer_club.is_member? current_user %>
+                <%= link_to 'Confirm', confirm_membership_path(ms), method: :post, class: 'btn btn-small' %>
+            <% end %>
+        </li>
     <% end %>
 </ul>
 
@@ -14,9 +29,8 @@
     <%= form_for(@membership) do |f| %>
       <%= f.hidden_field :beer_club_id %>
       <%= f.hidden_field :user_id %>
-      <%= f.submit "Join club!" %>
+      <%= f.submit "Join club!", class: 'btn' %>
     <% end %>
 <% end %>
 
-
-<%= link_to 'Edit', edit_beer_club_path(@beer_club) %>
+<%= edit_and_destroy_buttons(@beer_club) %>

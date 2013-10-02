@@ -1,6 +1,10 @@
 module RatingAverage
   def average_rating
-    ratings.average(:score)
-    # ratings.inject(0) { |avg, n| avg + n.score } / ratings.count.to_f
+    avg = ratings.average(:score)
+    if avg.nil?
+      0
+    else
+      avg
+    end
   end
 end

@@ -20,6 +20,8 @@ group :test do
   gem 'launchy'
   gem 'simplecov', :require => false
   gem 'webmock'
+  gem 'selenium-webdriver' 
+  gem 'database_cleaner', '< 1.1.0'
 end
 
 group :production do
@@ -43,6 +45,9 @@ gem 'jquery-rails'
 gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'httparty'
 gem "rails-settings-cached", "0.2.4"
+gem 'therubyracer'
+gem 'less-rails'
+gem 'twitter-bootstrap-rails'
 
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'

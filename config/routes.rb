@@ -1,10 +1,14 @@
 Ratebeer::Application.routes.draw do
   resources :styles
-  resources :memberships
+  resources :memberships do
+    post 'confirm', :on => :member
+  end
   resources :beer_clubs
   resources :users
   resources :beers
-  resources :breweries
+  resources :breweries do
+    post 'toggle_activity', :on => :member
+  end
   root :to => 'breweries#index'
   resources :ratings, :only => [:index, :new, :create, :destroy]
   get 'signup', to: 'users#new'
@@ -14,4 +18,5 @@ Ratebeer::Application.routes.draw do
   post "places" => "places#search"  
   delete 'signout', to: 'sessions#destroy'
   resources :sessions, :only => [:new, :create, :destroy]
+  get 'beerlist' => 'beers#list'
 end

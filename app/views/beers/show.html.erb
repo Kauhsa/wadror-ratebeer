@@ -10,7 +10,7 @@
 <% if @beer.ratings.empty? %>
   <p>beer does not have yet been rated!</p>
 <% else %>
-  <p>has been rated <%= @beer.ratings.count %> times, average score <%= @beer.average_rating %></p>
+  <p>has been rated <%= @beer.ratings.count %> times, average score <%= round @beer.average_rating %></p>
 <% end %>
 
 <h4>give a rating:</h4>
@@ -18,9 +18,9 @@
 <%= form_for(@rating) do |f| %>
   <%= f.hidden_field :beer_id %>
   score: <%= f.number_field :score %>
-  <%= f.submit %>
+  <%= f.submit class: 'btn' %>
 <% end %>
 
 <p></p>
 
-<%= link_to 'Edit', edit_beer_path(@beer) %> 
+<%= edit_and_destroy_buttons(@beer) %>

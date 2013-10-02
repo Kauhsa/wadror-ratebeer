@@ -4,11 +4,12 @@ class BreweriesController < ApplicationController
   # GET /breweries
   # GET /breweries.json
   def index
-    @breweries = Brewery.all
+    @active_breweries = Brewery.active.sort_by{ |b| b.send(params[:order] || 'name') }
+    @retired_breweries = Brewery.retired.sort_by{ |b| b.send(params[:order] || 'name') }
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @breweries }
+      format.json { render json: @active_breweries }
     end
   end
 
@@ -37,12 +38,14 @@ class BreweriesController < ApplicationController
   # GET /breweries/1/edit
   def edit
     @brewery = Brewery.find(params[:id])
+    expire_fragment :action => :index
   end
 
   # POST /breweries
   # POST /breweries.json
   def create
     @brewery = Brewery.new(params[:brewery])
+    expire_fragment :action => :index
 
     respond_to do |format|
       if @brewery.save
@@ -59,6 +62,7 @@ class BreweriesController < ApplicationController
   # PUT /breweries/1.json
   def update
     @brewery = Brewery.find(params[:id])
+    expire_fragment :action => :index
 
     respond_to do |format|
       if @brewery.update_attributes(params[:brewery])
@@ -76,11 +80,20 @@ class BreweriesController < ApplicationController
   def destroy
     @brewery = Brewery.find(params[:id])
     @brewery.destroy
+    expire_fragment :action => :index
 
     respond_to do |format|
       format.html { redirect_to breweries_url }
       format.json { head :no_content }
     end
+  end
+
+  def toggle_activity
+    brewery = Brewery.find(params[:id])
+    brewery.update_attribute :active, (not brewery.active)
+    new_status = brewery.active? ? "active" : "retired"
+    expire_fragment :action => :index
+    redirect_to :back, :notice => "brewery activity stataus changed to #{new_status}"
   end
 
   private

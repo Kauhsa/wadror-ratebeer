@@ -2,30 +2,35 @@
 
 <h1><%= @user.username %></h1>
 
-<p>has given <%= pluralize(@user.ratings.count, "rating") %>, average <%= @user.average_rating %></p>
+<p>has given <%= pluralize(@user.ratings.count, "rating") %>, average <%= round @user.average_rating %></p>
 
 <ul>
   <% @user.ratings.each do |rating| %>
     <li> 
       <%= rating %> 
       <% if currently_signed_in? @user %>
-          <%= link_to 'delete', rating, :method => :delete, :data => { :confirm => 'Are you sure?' } %> 
+          <%= link_to 'delete', rating, :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => 'btn btn-small btn-danger' %> 
       <% end %>
     </li>
   <% end %>
 </ul>
 
-<% unless @user.beer_clubs.empty? %>
-    <p>
-        belongs to
-        <% @user.beer_clubs.each do |club| %>
-            <%= link_to club, beer_club_path(club) %>
-        <% end %>
-    </p>
-<% end %>
+<h2>Member of:</h2>    
+<ul>
+  <% @user.member_in.each do |club| %>
+      <li><%= link_to club, beer_club_path(club) %></li>
+  <% end %>
+</ul>
+
+<h2>Applicant in:</h2>    
+<ul>
+  <% @user.applicant_in.each do |club| %>
+      <li><%= link_to club, beer_club_path(club) %></li>
+  <% end %>
+</ul>
 
 <% if @user.favorite_style %>
-  <p>favorite style: <%= @user.favorite_style %></p>
+  <p>favorite style: <%= link_to @user.favorite_style, @user.favorite_style %></p>
 <% end %>
 
 <% if @user.favorite_brewery %>
@@ -33,7 +38,6 @@
 <% end %>
 
 <% if currently_signed_in? @user %>
-    <%= link_to 'Edit', edit_user_path(@user) %> |
-    <%= link_to 'Delete', @user, :method => :delete, :data => { :confirm => 'Are you sure?' } %> |
+    <%= link_to 'Edit', edit_user_path(@user), class: 'btn' %>
+    <%= link_to 'Delete', @user, :method => :delete, :data => { :confirm => 'Are you sure?' }, class: 'btn btn-danger' %>
 <% end %>
-<%= link_to 'Back', users_path %>

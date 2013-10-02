@@ -86,6 +86,18 @@ class MembershipsController < ApplicationController
     end
   end
 
+  def confirm
+    @membership = Membership.find(params[:id])
+    
+    if @membership.beer_club.is_member? current_user
+      @membership.confirmed = true
+      @membership.save!
+      redirect_to :back, notice: 'Membership granted!'
+    else
+      redirect_to :back, notice: 'Could not grant membership :('
+    end    
+  end
+
   private
 
   def initialize_beer_club_list

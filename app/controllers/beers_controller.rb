@@ -1,14 +1,13 @@
 class BeersController < ApplicationController  
-  before_filter :ensure_that_signed_in, :except => [:index, :show]
+  before_filter :ensure_that_signed_in, :except => [:index, :show, :list]
 
-  # GET /beers
-  # GET /beers.json
   def index
-    @beers = Beer.all
+    @order = params[:order] || 'name'
+    @beers = Beer.all(:include => [:brewery, :style]).sort_by{ |b| b.send(@order) }
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @beers }
+      format.json { render json: @beers, :methods => [ :brewery, :style ] }
     end
   end
 
@@ -47,6 +46,7 @@ class BeersController < ApplicationController
   # POST /beers.json
   def create
     @beer = Beer.new(params[:beer])
+    expire_index
 
     respond_to do |format|
       if @beer.save
@@ -63,6 +63,7 @@ class BeersController < ApplicationController
   # PUT /beers/1.json
   def update
     @beer = Beer.find(params[:id])
+    expire_index
 
     respond_to do |format|
       if @beer.update_attributes(params[:beer])
@@ -80,10 +81,20 @@ class BeersController < ApplicationController
   def destroy
     @beer = Beer.find(params[:id])
     @beer.destroy
+    expire_index
 
     respond_to do |format|
       format.html { redirect_to beers_url }
       format.json { head :no_content }
     end
+  end
+
+  def list
+  end
+
+  private
+
+  def expire_index
+    ["beers-name", "beers-brewery", "beers-style"].each{ |f| expire_fragment(f) } 
   end
 end

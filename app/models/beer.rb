@@ -1,5 +1,6 @@
 class Beer < ActiveRecord::Base
   include RatingAverage
+  extend Top
 
   attr_accessible :brewery_id, :name, :style_id, :style
   belongs_to :brewery
