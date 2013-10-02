@@ -32,7 +32,7 @@ describe "Beerlist page" do
   end
 
   def nth_beer(n)
-    find('table').find("tr:nth-child(#{n + 1})")  
+    find('table tbody').find("tr:nth-child(#{n})")  
   end
 
   it "shows a known beer", :js => true do

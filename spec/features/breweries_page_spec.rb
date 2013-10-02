@@ -29,7 +29,7 @@ describe "Breweries page" do
       click_link "Koff"
 
       expect(page).to have_content "Koff"
-      expect(page).to have_content "Established year 1897"
+      expect(page).to have_content "Established at 1897"
     end
 
   end
