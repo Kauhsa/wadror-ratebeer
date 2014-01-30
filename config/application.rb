@@ -62,5 +62,7 @@ module Ratebeer
     config.cache_store = :memory_store
 
     config.autoload_paths += Dir["#{Rails.root}/lib"]
+
+    config.assets.initialize_on_precompile = false
   end
 end
